@@ -1,0 +1,27 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Computer, ComputerSearch, ConversionRequest, PageResponse } from '../models/conversion.models';
+
+@Injectable({ providedIn: 'root' })
+export class ConversionService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/conversions';
+
+  convertAndSave(computers: ConversionRequest[]): Observable<Computer[]> {
+    return this.http.post<Computer[]>(this.apiUrl, { computers });
+  }
+
+  searchComputers(search: ComputerSearch): Observable<PageResponse<Computer>> {
+    return this.http.get<PageResponse<Computer>>('/api/computers', {
+      params: {
+        ...(search.name ? { name: search.name } : {}),
+        ...(search.accountingDate ? { accountingDate: search.accountingDate } : {}),
+        sortBy: search.sortBy,
+        direction: search.direction,
+        page: search.page,
+        size: search.size
+      }
+    });
+  }
+}

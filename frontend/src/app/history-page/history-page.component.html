@@ -1,0 +1,88 @@
+<main class="page-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/conversion" aria-label="Kursownik — przejdź do przeliczania">
+      <span class="brand-mark" aria-hidden="true">K</span>
+      <span>Kursownik</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="nav-link active" routerLink="/history" aria-current="page">Historia</a>
+      <a class="primary-link" routerLink="/conversion">＋ Nowe przeliczenie</a>
+    </div>
+  </header>
+
+  <section class="intro">
+    <div class="eyebrow">BAZA ZAPISANYCH ZAKUPÓW</div>
+    <h1>Historia<br><span>przeliczeń.</span></h1>
+    <p>Wyszukuj zapisane komputery i sprawdzaj szczegóły zastosowanych kursów NBP.</p>
+  </section>
+
+  <section class="workspace" aria-label="Historia przeliczeń">
+    <div class="section-heading">
+      <div>
+        <h2>Zapisane komputery</h2>
+        <p>Filtruj po nazwie lub dacie księgowania.</p>
+      </div>
+      <span class="record-count">{{ totalElements }} {{ totalElements === 1 ? 'rekord' : 'rekordów' }}</span>
+    </div>
+
+    <form class="filters" [formGroup]="filters" (ngSubmit)="applyFilters()">
+      <label class="filter-field name-filter">
+        <span>Nazwa komputera</span>
+        <input type="search" formControlName="name" placeholder="Wpisz fragment nazwy">
+      </label>
+      <label class="filter-field date-filter">
+        <span>Data księgowania</span>
+        <input type="date" formControlName="accountingDate">
+      </label>
+      <button class="search-button" type="submit" [disabled]="isLoading">Szukaj</button>
+      <button class="clear-button" type="button" (click)="clearFilters()" [disabled]="isLoading">Wyczyść</button>
+    </form>
+
+    <div class="error-message" role="alert" *ngIf="errorMessage">
+      <span>{{ errorMessage }}</span>
+      <button type="button" (click)="retry()">Spróbuj ponownie</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><button type="button" class="sort-button" (click)="sort('name')">Komputer <span>{{ sortBy === 'name' ? (direction === 'asc' ? '↑' : '↓') : '↕' }}</span></button></th>
+            <th><button type="button" class="sort-button" (click)="sort('accountingDate')">Data księgowania <span>{{ sortBy === 'accountingDate' ? (direction === 'asc' ? '↑' : '↓') : '↕' }}</span></button></th>
+            <th>Data kursu NBP</th>
+            <th>Kurs USD</th>
+            <th>Koszt USD</th>
+            <th>Koszt PLN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let computer of computers">
+            <td class="computer-name">{{ computer.name }}</td>
+            <td>{{ computer.accountingDate | date:'dd.MM.yyyy':'':'pl' }}</td>
+            <td>{{ computer.rateEffectiveDate | date:'dd.MM.yyyy':'':'pl' }}</td>
+            <td>{{ computer.exchangeRate | number:'1.4-4':'pl-PL' }}</td>
+            <td>{{ computer.amountUsd | number:'1.2-2':'pl-PL' }} USD</td>
+            <td class="pln-value">{{ computer.amountPln | number:'1.2-2':'pl-PL' }} PLN</td>
+          </tr>
+          <tr *ngIf="isLoading">
+            <td class="state-cell" colspan="6">Ładowanie historii…</td>
+          </tr>
+          <tr *ngIf="!isLoading && !errorMessage && computers.length === 0">
+            <td class="state-cell" colspan="6">
+              {{ hasSearched ? 'Brak wyników dla podanych filtrów.' : 'Brak zapisanych przeliczeń.' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalElements > 0">
+      <span>Wyświetlono {{ firstResult }}–{{ lastResult }} z {{ totalElements }}</span>
+      <div class="page-controls">
+        <button type="button" (click)="changePage(page - 1)" [disabled]="page === 0 || isLoading" aria-label="Poprzednia strona">←</button>
+        <span>Strona {{ page + 1 }} z {{ totalPages }}</span>
+        <button type="button" (click)="changePage(page + 1)" [disabled]="page + 1 >= totalPages || isLoading" aria-label="Następna strona">→</button>
+      </div>
+    </div>
+  </section>
+</main>

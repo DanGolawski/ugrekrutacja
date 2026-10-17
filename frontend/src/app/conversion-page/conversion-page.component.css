@@ -1,0 +1,49 @@
+:host{display:block;min-height:100vh;background:#f5f7f8;color:#172b35;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.page-shell{max-width:1120px;margin:auto;padding:0 36px}
+.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e4e9eb}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;font-size:17px;font-weight:750}
+.topbar-actions{display:flex;align-items:center;gap:24px}
+.nav-link{color:#46615f;text-decoration:none;font-size:12px;font-weight:700}
+.topbar-note{display:flex;align-items:center;gap:8px;color:#60737b;font-size:12px;font-weight:600}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#19a681}
+.intro{max-width:610px;padding:55px 0 34px}
+.eyebrow,.success-label{color:#087e73;font-size:10px;font-weight:800;letter-spacing:1.2px}
+.intro h1{margin:15px 0 12px;font-size:clamp(38px,6vw,56px);line-height:1.04;letter-spacing:-2px}
+.intro h1 span{color:#087e73}
+.intro p{max-width:520px;margin:0;color:#647780;font-size:15px;line-height:1.7}
+.workspace{margin-bottom:34px;padding:26px 28px;background:#fff;border:1px solid #e7ecee;border-radius:16px;box-shadow:0 12px 36px #1b39400a}
+.section-heading,.results-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.section-heading h2,.results-heading h2{margin:0;font-size:17px}
+.section-heading p{margin:5px 0 0;color:#84939a;font-size:12px}
+.table-wrap{margin-top:23px}
+.table-head,.computer-row{display:grid;grid-template-columns:minmax(170px,1.25fr) minmax(120px,.8fr) minmax(170px,1fr) 32px;gap:18px;align-items:start}
+.table-head{padding:0 10px 10px;color:#88979c;font-size:9px;font-weight:800;letter-spacing:.8px}
+.computer-row{min-height:68px;padding:11px 10px;border-top:1px solid #eef1f2}
+.field{position:relative;display:block}
+.field input{box-sizing:border-box;width:100%;height:40px;padding:0 11px;border:1px solid #dce4e6;border-radius:7px;background:#fff;color:#243942;font:inherit;font-size:13px;outline:none}
+.field input:focus{border-color:#0a9384}
+.amount-field input{padding-left:27px}
+.input-prefix{position:absolute;top:11px;left:11px;color:#8b9a9f;font-size:13px}
+.field-error{display:block;margin-top:4px;color:#ba3d3d;font-size:10px}
+.mobile-label{display:none}
+.remove-button{width:30px;height:38px;border:0;background:none;color:#8a999d;font-size:23px;cursor:pointer}
+.remove-button:hover:not(:disabled){color:#c04444}
+.remove-button:disabled{opacity:.35;cursor:not-allowed}
+.form-actions{display:flex;justify-content:space-between;gap:10px;margin-top:14px;padding-top:17px;border-top:1px solid #eef1f2}
+.add-button,.submit-button{height:42px;padding:0 16px;border-radius:7px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.add-button{border:1px solid #dce5e5;background:#fff;color:#42615e}
+.add-button span{color:#087e73}
+.submit-button{min-width:164px;border:0;background:#087e73;color:#fff}
+.submit-button:disabled{opacity:.7;cursor:wait}
+.error-message{margin-top:18px;padding:12px;border:1px solid #f0caca;border-radius:8px;background:#fff7f7;color:#9c3333;font-size:12px}
+.results{margin-top:30px;padding-top:24px;border-top:1px solid #e9eeee}
+.results-heading{margin-bottom:4px}
+.results-heading h2{margin-top:8px}
+.result-table{overflow-x:auto}
+table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
+th{padding:10px 9px;color:#87969b;font-size:9px;letter-spacing:.6px}
+td{padding:13px 9px;border-top:1px solid #eef1f2;color:#5f7177;font-size:12px}
+.result-name{color:#263e46;font-weight:700}
+.pln-value{color:#087e73;font-weight:750}
+.rate-note{color:#87969b;font-size:10px}
+@media(max-width:700px){.page-shell{padding:0 18px}.intro{padding:42px 0 27px}.workspace{padding:20px 16px}.table-head{display:none}.computer-row{grid-template-columns:1fr 1fr 30px;gap:12px 10px;padding:13px 4px}.name-field{grid-column:1/3}.amount-field{grid-column:1}.date-field{grid-column:2}.remove-button{grid-column:3;grid-row:1;justify-self:end}.mobile-label{display:block;margin-bottom:5px;color:#839197;font-size:10px}.form-actions{flex-wrap:wrap}}

@@ -1,0 +1,101 @@
+<main class="page-shell">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Kursownik — strona główna">
+      <span class="brand-mark" aria-hidden="true">K</span>
+      <span>Kursownik</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="nav-link" routerLink="/history">Historia</a>
+      <span class="topbar-note"><span class="status-dot"></span> Kursy walut NBP</span>
+    </div>
+  </header>
+
+  <section class="intro">
+    <div class="eyebrow"><span aria-hidden="true">↗</span> ROZLICZENIA ZAKUPÓW</div>
+    <h1>Przelicz zakup<br><span>na złotówki.</span></h1>
+    <p>Podaj dane komputerów, a pobierzemy właściwy kurs USD z NBP, przeliczymy kwoty i zapiszemy wyniki.</p>
+  </section>
+
+  <section class="workspace" aria-label="Formularz przeliczenia">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="section-heading">
+        <div>
+          <h2>Pozycje zakupu</h2>
+          <p>Daty księgowania decydują o zastosowanym kursie.</p>
+        </div>
+        <span class="item-count">{{ computers.length }} {{ computers.length === 1 ? 'pozycja' : 'pozycje' }}</span>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-head" aria-hidden="true">
+          <span>NAZWA KOMPUTERA</span>
+          <span>KWOTA (USD)</span>
+          <span>DATA KSIĘGOWANIA</span>
+          <span></span>
+        </div>
+        <div class="computer-list" formArrayName="computers">
+          <div class="computer-row" *ngFor="let computer of computers.controls; let i = index" [formGroupName]="i">
+            <label class="field name-field">
+              <span class="mobile-label">Nazwa komputera</span>
+              <input type="text" formControlName="name" placeholder="np. ACER Aspire" [attr.aria-label]="'Nazwa komputera ' + (i + 1)">
+              <small class="field-error" *ngIf="computer.controls.name.touched && computer.controls.name.invalid">Podaj nazwę (maks. 150 znaków).</small>
+            </label>
+            <label class="field amount-field">
+              <span class="mobile-label">Kwota (USD)</span>
+              <span class="input-prefix">$</span>
+              <input type="number" formControlName="amountUsd" min="0.01" step="0.01" placeholder="0.00" [attr.aria-label]="'Kwota USD ' + (i + 1)">
+              <small class="field-error" *ngIf="computer.controls.amountUsd.touched && computer.controls.amountUsd.invalid">Kwota musi być większa od 0.</small>
+            </label>
+            <label class="field date-field">
+              <span class="mobile-label">Data księgowania</span>
+              <input type="date" formControlName="accountingDate" [attr.aria-label]="'Data księgowania ' + (i + 1)">
+              <small class="field-error" *ngIf="computer.controls.accountingDate.touched && computer.controls.accountingDate.invalid">Wybierz datę.</small>
+            </label>
+            <button class="remove-button" type="button" (click)="removeComputer(i)" [disabled]="computers.length === 1" [attr.aria-label]="'Usuń pozycję ' + (i + 1)" title="Usuń pozycję">×</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="add-button" type="button" (click)="addComputer()"><span aria-hidden="true">＋</span> Dodaj komputer</button>
+        <button class="submit-button" type="submit" [disabled]="isSaving">
+          <span *ngIf="!isSaving">Przelicz i zapisz <span aria-hidden="true">→</span></span>
+          <span *ngIf="isSaving">Przeliczam…</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="error-message" role="alert" *ngIf="errorMessage">
+      <span aria-hidden="true">!</span>{{ errorMessage }}
+    </div>
+
+    <section class="results" *ngIf="results.length" aria-live="polite">
+      <div class="results-heading">
+        <div>
+          <span class="success-label"><span class="status-dot"></span> ZAPISANO W BAZIE</span>
+          <h2>Wyniki przeliczenia</h2>
+        </div>
+        <span class="result-total">{{ results.length }} {{ results.length === 1 ? 'rekord' : 'rekordy' }}</span>
+      </div>
+      <div class="table-wrap result-table">
+        <table>
+          <thead>
+            <tr><th>Komputer</th><th>Data księgowania</th><th>Data kursu NBP</th><th>Kurs NBP</th><th>Koszt USD</th><th>Koszt PLN</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of results">
+              <td class="result-name">{{ result.name }}</td>
+              <td>{{ result.accountingDate | date:'dd.MM.yyyy':'':'pl' }}</td>
+              <td>{{ result.rateEffectiveDate | date:'dd.MM.yyyy':'':'pl' }}</td>
+              <td>{{ result.exchangeRate | number:'1.4-4':'pl-PL' }}</td>
+              <td>{{ result.amountUsd | number:'1.2-2':'pl-PL' }} USD</td>
+              <td class="pln-value">{{ result.amountPln | number:'1.2-2':'pl-PL' }} PLN</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="rate-note">Daty kursu NBP mogą różnić się od dat księgowania, jeśli NBP nie publikuje tabeli w danym dniu.</p>
+    </section>
+  </section>
+
+</main>
