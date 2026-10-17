@@ -69,6 +69,10 @@
       <span aria-hidden="true">!</span>{{ errorMessage }}
     </div>
 
+    <p class="success-label" role="status" *ngIf="successMessage">
+      <span aria-hidden="true">✓</span>{{ successMessage }}
+    </p>
+
     <section class="results" *ngIf="results.length" aria-live="polite">
       <div class="results-heading">
         <div>

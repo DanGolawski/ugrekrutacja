@@ -38,6 +38,7 @@ export class ConversionPageComponent {
   results: Computer[] = [];
   isSaving = false;
   errorMessage = '';
+  successMessage = '';
 
   addComputer(): void {
     this.computers.push(this.createComputerForm('', null, ''));
@@ -51,6 +52,7 @@ export class ConversionPageComponent {
 
   submit(): void {
     this.errorMessage = '';
+    this.successMessage = '';
     this.results = [];
 
     if (this.form.invalid) {
@@ -68,6 +70,7 @@ export class ConversionPageComponent {
     this.conversionService.convertAndSave(request).subscribe({
       next: results => {
         this.results = results;
+        this.successMessage = 'Operacja przebiegła pomyślnie. Komputery zostały przeliczone i zapisane.';
         this.isSaving = false;
       },
       error: (error: HttpErrorResponse) => {
