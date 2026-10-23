@@ -30,7 +30,9 @@ export class HistoryPageComponent implements OnInit {
   sortBy: ComputerSearch['sortBy'] = 'accountingDate';
   direction: ComputerSearch['direction'] = 'desc';
   isLoading = false;
+  isExporting = false;
   errorMessage = '';
+  exportErrorMessage = '';
   hasSearched = false;
 
   ngOnInit(): void {
@@ -68,6 +70,28 @@ export class HistoryPageComponent implements OnInit {
 
   retry(): void {
     this.loadComputers();
+  }
+
+  exportXml(): void {
+    this.exportErrorMessage = '';
+    this.isExporting = true;
+    this.conversionService.exportComputersXml().subscribe({
+      next: file => {
+        const url = URL.createObjectURL(file);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'faktura.xml';
+        link.click();
+        window.setTimeout(() => URL.revokeObjectURL(url));
+        this.isExporting = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.exportErrorMessage = error.status === 0
+          ? 'Nie udało się połączyć z serwerem. Sprawdź, czy backend jest uruchomiony.'
+          : 'Nie udało się pobrać pliku XML. Spróbuj ponownie.';
+        this.isExporting = false;
+      }
+    });
   }
 
   get firstResult(): number {

@@ -24,4 +24,10 @@ export class ConversionService {
       }
     });
   }
+
+  exportComputersXml(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/computers/export/xml`, {
+      responseType: 'blob'
+    });
+  }
 }

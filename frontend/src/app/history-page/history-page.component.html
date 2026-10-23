@@ -23,6 +23,9 @@
         <p>Filtruj po nazwie lub dacie księgowania.</p>
       </div>
       <span class="record-count">{{ totalElements }} {{ totalElements === 1 ? 'rekord' : 'rekordów' }}</span>
+      <button class="clear-button" type="button" (click)="exportXml()" [disabled]="isExporting">
+        {{ isExporting ? 'Przygotowuję XML…' : 'Pobierz XML' }}
+      </button>
     </div>
 
     <form class="filters" [formGroup]="filters" (ngSubmit)="applyFilters()">
@@ -37,6 +40,10 @@
       <button class="search-button" type="submit" [disabled]="isLoading">Szukaj</button>
       <button class="clear-button" type="button" (click)="clearFilters()" [disabled]="isLoading">Wyczyść</button>
     </form>
+
+    <div class="error-message" role="alert" *ngIf="exportErrorMessage">
+      <span>{{ exportErrorMessage }}</span>
+    </div>
 
     <div class="error-message" role="alert" *ngIf="errorMessage">
       <span>{{ errorMessage }}</span>
